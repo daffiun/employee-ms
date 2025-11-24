@@ -1,23 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DepartmenController;
+use App\Http\Controllers\AttendanceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('employees', EmployeeController::class);
-
-Route::post('/attendance/check-in', [AttendanceController::class, 'checkIn'])->name('attendance.checkin');
-Route::post('/attendance/check-out', [AttendanceController::class, 'checkOut'])->name('attendance.checkout');
-Route::get('/attendance/rekap/{id}', [AttendanceController::class, 'rekap'])->name('attendance.rekap');
-
-Route::get('/salary/{employee_id}', [SalaryController::class, 'index'])->name('salary.index');
-Route::get('/salary/slip/{id}', [SalaryController::class, 'show'])->name('salary.show');
-
-Route::get('/manager/{id}/subordinates', [ManagerController::class, 'subordinates']);
-Route::get('/manager/{id}/attendance', [ManagerController::class, 'subordinateAttendance']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -27,6 +17,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    //dashboard
+    Route::get('/dashboard', [DashboardController]::class, 'index');
+
+    //attendance
+    Route::post('/atten')
 });
 
 require __DIR__.'/auth.php';

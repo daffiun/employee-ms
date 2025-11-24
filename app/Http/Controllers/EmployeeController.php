@@ -15,6 +15,8 @@ class EmployeeController extends Controller
     public function index()
     {
         //
+        $employees = Employee::with(['department', 'position', 'manager'])->paginate(10);
+        return view('employees.index', compact('employees'));
     }
 
     /**
@@ -23,6 +25,11 @@ class EmployeeController extends Controller
     public function create()
     {
         //
+        return view('employees.create', [
+            'departments' => Department::all(),
+            'positions'   => Position::all(),
+            'managers'    => Employee::all()
+        ]);
     }
 
     /**
@@ -31,6 +38,19 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            'full_name'     => 'required',
+            'email'         => 'required|email|unique:employees',
+            'phone'         => 'nullable',
+            'department_id' => 'required',
+            'position_id'   => 'required',
+            'manager_id'    => 'nullable',
+            'join_date'     => 'required|date'
+        ]);
+
+        Employee::create($validated);
+
+        return redirect()->route('employees.index')->with('success', 'Karyawan berhasil ditambahkan');
     }
 
     /**
@@ -39,6 +59,8 @@ class EmployeeController extends Controller
     public function show(Employee $employee)
     {
         //
+        $employee->load(['department', 'position', 'manager', 'subordinates']);
+        return view('employees.show', compact('employee'));
     }
 
     /**
@@ -47,6 +69,12 @@ class EmployeeController extends Controller
     public function edit(Employee $employee)
     {
         //
+        return view('employees.edit', [
+            'employee'    => $employee,
+            'departments' => Department::all(),
+            'positions'   => Position::all(),
+            'managers'    => Employee::where('id', '!=', $employee->id)->get(),
+        ]);
     }
 
     /**
@@ -55,6 +83,19 @@ class EmployeeController extends Controller
     public function update(Request $request, Employee $employee)
     {
         //
+        $validated = $request->validate([
+            'full_name'     => 'required',
+            'email'         => 'required|email|unique:employees,email,' . $employee->id,
+            'phone'         => 'nullable',
+            'department_id' => 'required',
+            'position_id'   => 'required',
+            'manager_id'    => 'nullable',
+            'join_date'     => 'required|date'
+        ]);
+
+        $employee->update($validated);
+
+        return redirect()->route('employees.index')->with('success', 'Data berhasil diperbarui');
     }
 
     /**
@@ -63,5 +104,7 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         //
+        $employee->delete();
+        return back()->with('success', 'Karyawan dihapus');
     }
 }

@@ -15,19 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('full_name');
             $table->string('email')->unique();
-            $table->string('phone')->nullable();
-            $table->date('birthdate')->nullable();
-            $table->text('address')->nullable();
+            $table->string('phone');
+            $table->date('birthdate');
+            $table->text('address');
             $table->date('join_date');
-
-            $table->foreignId('department_id')->constrained('departments')->cascadeOnDelete();
-            $table->foreignId('position_id')->cascadeOnDelete();
-            $table->foreignId('manager_id')->nullable()->constrained('employees')->nullOnDelete();
-
+            $table->foreignId('department_id')->constrained()->onDelete('cascade');
+            $table->foreignId('position_id')->constrained()->onDelete('cascade');
+            $table->foreignId('manager_id')->nullable()->constrained('employees')->onDelete('set null');
             $table->enum('status', ['aktif', 'tidak aktif'])->default('aktif');
-            
             $table->timestamps();
         });
+        
     }
 
     /**

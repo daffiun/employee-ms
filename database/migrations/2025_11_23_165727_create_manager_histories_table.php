@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('manager_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('manager_id')->constrained('employees')->cascadeOnDelete();
-            $table->foreignId('department_id')->constrained('departments')->cascadeOnDelete();
-
+            $table->foreignId('manager_id')->constrained('employees')->onDelete('cascade');
+            $table->foreignId('department_id')->constrained()->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date')->nullable();
-            
             $table->timestamps();
         });
+        
     }
 
     /**

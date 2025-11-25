@@ -7,9 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Position extends Model
 {
     //
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'default_base_salary', 'default_allowance'];
 
-    public function employees() {
+    protected $casts = [
+        'default_base_salary' => 'decimal:2',
+        'default_allowance' => 'decimal:2',
+    ];
+
+    public function employees(){
         return $this->hasMany(Employee::class);
     }
 }

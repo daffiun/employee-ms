@@ -20,6 +20,11 @@ class Employee extends Model
         'status',        
     ];
 
+    protected $casts = [
+        'birthdate' => 'date',
+        'join_date' => 'date',
+    ];
+
     public function department() {
         return $this->belongsTo(Department::class);
     }
@@ -42,6 +47,6 @@ class Employee extends Model
         return $this->hasOne(User::class);
     }
     public function managerHistory(){
-        return $this->hasMany(ManagerHistory::class);
+        return $this->hasMany(ManagerHistory::class, 'manager_id');
     }
 }

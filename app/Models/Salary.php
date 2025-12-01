@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Salary extends Model
 {
-    //
+    use HasFactory;
+
     protected $fillable = [
         'employee_id',
         'month',
@@ -14,18 +16,20 @@ class Salary extends Model
         'allowance',
         'bonus',
         'deduction',
-        'total_salary',
+        'total_salary'
     ];
 
     protected $casts = [
-        'base_salary' => 'decimal:2',
-        'allowance' => 'decimal:2',
-        'bonus' => 'decimal:2',
-        'deduction' => 'decimal:2',
-        'total_salary' => 'decimal:2',
+        'month' => 'string',
     ];
 
-    public function employee() {
+    public function employee()
+    {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function scopeForMonth($q, $month)
+    {
+        return $q->where('month', $month);
     }
 }

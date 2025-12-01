@@ -2,81 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreEmployeeRequest;
-use App\Models\Department;
-use App\Models\Employee;
-use App\Models\Position;
-use App\Models\User;
+use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    // Daftar karyawan
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $employees = Employee::with('department', 'position')
-            ->paginate(15);
-        return view('admin.employees.index', ['employees' => $employees]);
+        //
     }
 
-    // Form tambah karyawan
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        $departments = Department::all();
-        $positions = Position::all();
-        $managers = Employee::where('status', 'aktif')->get();
-        
-        return view('admin.employees.create', [
-            'departments' => $departments,
-            'positions' => $positions,
-            'managers' => $managers,
-        ]);
+        //
     }
 
-    // Simpan karyawan baru
-    public function store(StoreEmployeeRequest $request)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
-        $employee = Employee::create($request->validated());
-
-        // Buat user account jika diminta
-        if ($request->has('create_user')) {
-            User::create([
-                'name' => $request->full_name,
-                'email' => $request->email,
-                'password' => bcrypt('password123'),
-                'employee_id' => $employee->id,
-                'role' => 'employee',
-            ]);
-        }
-
-        return redirect()->route('admin.employees.index')->with('success', 'Karyawan berhasil ditambahkan');
+        //
     }
 
-    // Form edit karyawan
-    public function edit(Employee $employee)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        $departments = Department::all();
-        $positions = Position::all();
-        $managers = Employee::where('status', 'aktif')->where('id', '!=', $employee->id)->get();
-        
-        return view('admin.employees.edit', [
-            'employee' => $employee,
-            'departments' => $departments,
-            'positions' => $positions,
-            'managers' => $managers,
-        ]);
+        //
     }
 
-    // Update karyawan
-    public function update(StoreEmployeeRequest $request, Employee $employee)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        $employee->update($request->validated());
-        return redirect()->route('admin.employees.index')->with('success', 'Karyawan berhasil diubah');
+        //
     }
 
-    // Hapus karyawan
-    public function destroy(Employee $employee)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        $employee->delete();
-        return redirect()->route('admin.employees.index')->with('success', 'Karyawan berhasil dihapus');
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

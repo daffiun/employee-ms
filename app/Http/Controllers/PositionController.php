@@ -2,48 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePositionRequest;
-use App\Models\Position;
+use Illuminate\Http\Request;
 
 class PositionController extends Controller
 {
-    // Daftar posisi
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $positions = Position::paginate(15);
-        return view('admin.positions.index', ['positions' => $positions]);
+        //
     }
 
-    // Form tambah posisi
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        return view('admin.positions.create');
+        //
     }
 
-    // Simpan posisi baru
-    public function store(StorePositionRequest $request)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
-        Position::create($request->validated());
-        return redirect()->route('admin.positions.index')->with('success', 'Posisi berhasil ditambahkan');
+        //
     }
 
-    // Form edit posisi
-    public function edit(Position $position)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        return view('admin.positions.edit', ['position' => $position]);
+        //
     }
 
-    // Update posisi
-    public function update(StorePositionRequest $request, Position $position)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        $position->update($request->validated());
-        return redirect()->route('admin.positions.index')->with('success', 'Posisi berhasil diubah');
+        //
     }
 
-    // Hapus posisi
-    public function destroy(Position $position)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        $position->delete();
-        return redirect()->route('admin.positions.index')->with('success', 'Posisi berhasil dihapus');
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

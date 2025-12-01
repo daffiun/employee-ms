@@ -19,10 +19,21 @@ return new class extends Migration
             $table->date('birthdate');
             $table->text('address');
             $table->date('join_date');
-            $table->foreignId('department_id')->constrained()->onDelete('cascade');
-            $table->foreignId('position_id')->constrained()->onDelete('cascade');
-            $table->foreignId('manager_id')->nullable()->constrained('employees')->onDelete('set null');
+
+            $table->enum('employment_type', ['fulltime', 'parttime', 'contract', 'intern'])
+                ->default('fulltime');
+
+            $table->foreignId('department_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('position_id')->constrained()->cascadeOnDelete();
+
+            $table->foreignId('manager_id')->nullable()->constrained('employees')->nullOnDelete();
+
+            // rate for salary calculations
+            $table->decimal('overtime_rate', 12, 2)->default(30000); // per hour
+            $table->decimal('late_penalty_rate', 12, 2)->default(20000); // per hour
+
             $table->enum('status', ['aktif', 'tidak aktif'])->default('aktif');
+
             $table->timestamps();
         });
         

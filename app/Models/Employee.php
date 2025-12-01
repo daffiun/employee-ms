@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Employee extends Model
 {
     //
+    use HasFactory;
     protected $fillable = [
         'full_name',
         'email',
@@ -14,9 +16,12 @@ class Employee extends Model
         'birthdate',
         'address',
         'join_date',
+        'employment_type',
         'department_id',
         'position_id',
         'manager_id',
+        'overtime_rate',
+        'late_penalty_rate',
         'status',        
     ];
 
@@ -48,5 +53,39 @@ class Employee extends Model
     }
     public function managerHistory(){
         return $this->hasMany(ManagerHistory::class, 'manager_id');
+    }
+
+    public function allSubordinates()
+    {
+        return $this->subordinates()->with('allSubordinates');
+    }
+
+    public function allManagers()
+    {
+        return $this->manager()->with('allManagers');
+    }
+
+    public function getCurrentSalaryAttribute()
+    {
+        $month = now()->format('Y-m');
+
+        return $this->salaries()
+            ->where('month', $month)
+            ->first();
+    }
+
+    public function getFullPositionAttribute()
+    {
+        return $this->position->name . ' - ' . $this->department->name;
+    }
+
+    public function scopeActive($q)
+    {
+        return $q->where('status', 'aktif');
+    }
+
+    public function scopeWithPositionSalary($q)
+    {
+        return $q->with('position:id,default_base_salary,default_allowance');
     }
 }

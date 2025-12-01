@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Attendance extends Model
 {
-    //
+    use HasFactory;
+
     protected $fillable = [
         'employee_id',
         'date',
@@ -17,11 +19,17 @@ class Attendance extends Model
 
     protected $casts = [
         'date' => 'date',
-        'time_in' => 'datetime:H:i:s',
-        'time_out' => 'datetime:H:i:s',
+        'time_in' => 'datetime:H:i',
+        'time_out' => 'datetime:H:i',
     ];
 
-    public function employee() {
-        return $this->belongTo(Employee::class);
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
+    public function log()
+    {
+        return $this->hasOne(AttendanceLog::class);
     }
 }

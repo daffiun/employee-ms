@@ -1,16 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\DepartmentController;
 
-require __DIR__.'/auth.php';
-
-Route::middleware('auth')->get('/', function () {
-    return redirect()->route(
-        auth()->user()->role === 'admin'
-            ? 'admin.dashboard'
-            : 'employee.dashboard'
-    );
+Route::get('/', function () {
+    return view('welcome');
+});
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', function(){
+        return view('admin.dashboard');
+    })->name('dashboard');
+    // buat crud
+    Route::resource('employees', EmployeeController::class);
+    Route::resource('departments', DepartmentController::class);
 });
 
-require __DIR__.'/employee.php';
-require __DIR__.'/admin.php';
+Route::middleware(['auth', 'role:employee'])
+    ->get('/dashboard', function () {
+        return view('employees.dashboard');
+    })->name('employees.dashboard');
+
+require __DIR__.'/auth.php';

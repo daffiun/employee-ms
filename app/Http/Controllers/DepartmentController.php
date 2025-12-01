@@ -2,48 +2,65 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreDepartmentRequest;
 use App\Models\Department;
+use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
-    // Daftar departemen
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $departments = Department::paginate(15);
-        return view('admin.departments.index', ['departments' => $departments]);
+        $departments = Department::all();
+        return view('admin.departments.index', compact('departments'));
     }
 
-    // Form tambah departemen
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
         return view('admin.departments.create');
     }
 
-    // Simpan departemen baru
-    public function store(StoreDepartmentRequest $request)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
-        Department::create($request->validated());
-        return redirect()->route('admin.departments.index')->with('success', 'Departemen berhasil ditambahkan');
+       
     }
 
-    // Form edit departemen
-    public function edit(Department $department)
+    /**
+     * Display the specified resource.
+     */
+    public function show(Department $departments)
     {
-        return view('admin.departments.edit', ['department' => $department]);
+        
     }
 
-    // Update departemen
-    public function update(StoreDepartmentRequest $request, Department $department)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        $department->update($request->validated());
-        return redirect()->route('admin.departments.index')->with('success', 'Departemen berhasil diubah');
+        //
     }
 
-    // Hapus departemen
-    public function destroy(Department $department)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        $department->delete();
-        return redirect()->route('admin.departments.index')->with('success', 'Departemen berhasil dihapus');
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

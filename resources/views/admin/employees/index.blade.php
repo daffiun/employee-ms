@@ -1,10 +1,10 @@
 <x-app-layout> 
-   <x-slot name="header">
+   {{-- <x-slot name="header">
       <h2 class="">
          {{ ('Daftar Karyawan') }}
       </h2>
    </x-slot>
-   <div>
-
+   <div> --}}
+dsada
 </x-app-layout> 
 

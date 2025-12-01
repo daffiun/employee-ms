@@ -10,7 +10,7 @@
        <label>Description</label>
        <textarea name="description" class="border rounded w-full"></textarea>
    
-       <button class="bg-green-500 text-white px-3 py-1 mt-3">Save</button>
+       <button class="bg-green-500  px-3 py-1 mt-3">Save</button>
    </form>
 </x-app-layout>
    

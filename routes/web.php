@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\PositionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,6 +15,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // buat crud
     Route::resource('employees', EmployeeController::class);
     Route::resource('departments', DepartmentController::class);
+    Route::resource('positions', PositionController::class);
 });
 
 Route::middleware(['auth', 'role:employee'])
